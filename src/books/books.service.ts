@@ -1,37 +1,55 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { Book, BookDocument } from '../schemas/book.schema';
+import {
+  Connection,
+  HydratedDocument,
+  Model,
+  QueryWithHelpers,
+} from 'mongoose';
 
 @Injectable()
 export class BooksService {
-  private books = [];
+  constructor(
+    @InjectModel(Book.name) private BookModel: Model<BookDocument>,
+    @InjectConnection() private connection: Connection,
+  ) {}
 
-  create(createBookDto: CreateBookDto) {
-    this.books.push(createBookDto);
-    return createBookDto;
+  create(data: CreateBookDto): Promise<BookDocument> {
+    const book = new this.BookModel(data);
+    return book.save();
   }
 
-  findAll() {
-    return this.books;
+  findAll(): Promise<BookDocument[]> {
+    return this.BookModel.find().select('-__v').exec();
   }
 
-  findOne(id: number) {
-    return this.books.find((book) => book.id === id);
+  update(
+    id: string,
+    data: UpdateBookDto,
+  ): QueryWithHelpers<
+    HydratedDocument<BookDocument, {}, {}> | null,
+    HydratedDocument<BookDocument, {}, {}>,
+    {},
+    BookDocument
+  > {
+    return this.BookModel.findOneAndUpdate({ _id: id }, data);
   }
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return (this.books = this.books.map((book) => {
-      if (book.id === id) {
-        return {
-          ...book,
-          ...updateBookDto,
-        };
-      }
-      return book;
-    }));
+  remove(
+    id: string,
+  ): QueryWithHelpers<
+    HydratedDocument<BookDocument, {}, {}> | null,
+    HydratedDocument<BookDocument, {}, {}>,
+    {},
+    BookDocument
+  > {
+    return this.BookModel.findOneAndRemove({ _id: id });
   }
 
-  remove(id: number) {
-    return (this.books = this.books.filter((book) => book.id !== id));
+  findOne(id: string) {
+    return this.BookModel.findById(id).select('-__v');
   }
 }

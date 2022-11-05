@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, model } from 'mongoose';
+import { Document, model, Schema as MongooseSchema } from 'mongoose';
 
 export type BookDocument = Book & Document;
 
