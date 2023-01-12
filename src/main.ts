@@ -5,8 +5,10 @@ import { HttpExceptionFilter } from './http.exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalInterceptors(new AppTransformInterceptor());
-  app.useGlobalFilters(new HttpExceptionFilter());
+  const globalPrefix = 'api';
+  app.setGlobalPrefix(globalPrefix);
+  // app.useGlobalInterceptors(new AppTransformInterceptor());
+  // app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(3000);
 }
 bootstrap();
