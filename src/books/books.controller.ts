@@ -21,32 +21,32 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @UsePipes(new JoiValidationPipe(bookValidationSchema))
   @Post()
   create(@Body() createBookDto: CreateBookDto) {
     return this.booksService.create(createBookDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
-    if (Math.random() > 0.75) {
-      throw new Error('Unhandled Error');
-    }
+    // if (Math.random() > 0.75) {
+    //   throw new Error('Unhandled Error');
+    // }
     return this.booksService.findAll();
   }
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.booksService.findOne(id);
   }
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Put(':id')
   update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
     return this.booksService.update(id, updateBookDto);
   }
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.booksService.remove(id);

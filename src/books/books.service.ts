@@ -1,21 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
-import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 import { Book, BookDocument } from '../schemas/book.schema';
-import {
-  Connection,
-  HydratedDocument,
-  Model,
-  QueryWithHelpers,
-} from 'mongoose';
+import { HydratedDocument, Model, QueryWithHelpers } from 'mongoose';
 
 @Injectable()
 export class BooksService {
-  constructor(
-    @InjectModel(Book.name) private BookModel: Model<BookDocument>,
-    @InjectConnection() private connection: Connection,
-  ) {}
+  constructor(@InjectModel(Book.name) private BookModel: Model<BookDocument>) {}
 
   create(data: CreateBookDto): Promise<BookDocument> {
     const book = new this.BookModel(data);

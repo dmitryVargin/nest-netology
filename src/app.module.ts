@@ -17,7 +17,7 @@ const options = {
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGO_CONNECTION, options),
+    MongooseModule.forRoot('mongodb://localhost:27017', options),
     BooksModule,
     AuthModule,
   ],
